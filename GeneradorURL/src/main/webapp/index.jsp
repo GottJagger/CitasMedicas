@@ -8,6 +8,9 @@
         <title>testing jsp</title>
     </head>
     <body>
-        <h1>HOLA MUNDO</h1>
+        <form action="ServletGenerarPDF" method="GET">
+            <input type="submit" value="visuallizar PDF" name="btnPDF" />
+        </form>
+        
     </body>
 </html>

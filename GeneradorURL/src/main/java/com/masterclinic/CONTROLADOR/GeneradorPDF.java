@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.masterclinic.MODELO.Cita;
+import java.io.OutputStream;
 
 /**
  *
@@ -29,12 +30,11 @@ public class GeneradorPDF {
     
 //    private static Cita datos = datosCita.llenarCita(datosCita.extraerDatosCita());
 
-    public static void crearPDF(Cita datos) {
+    public  void crearPDF(Cita datos, OutputStream ruta) {
         try {
 
-            String filePath = "C:/Users/Gott Jagger/Documents/NetBeansProjects/GeneradorURL/pdf/citacion usuario " + datos.getPaciente() + ".pdf";
             Document documento = new Document();
-            PdfWriter writer = PdfWriter.getInstance(documento, new FileOutputStream(filePath));
+            PdfWriter writer = PdfWriter.getInstance(documento, ruta);
             documento.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
             documento.addTitle("cita medica");
@@ -50,8 +50,6 @@ public class GeneradorPDF {
             chapter.add(new Paragraph("Observaciones: \n" + datos.getObservaciones()));
             documento.add(chapter);
             documento.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GeneradorPDF.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException ex) {
             Logger.getLogger(GeneradorPDF.class.getName()).log(Level.SEVERE, null, ex);
         }
