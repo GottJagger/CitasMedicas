@@ -27,8 +27,8 @@ import org.json.JSONObject;
  */
 public class TratamientoDatos {
 
-    private static Cita datosCita = null;
-    
+    Cita datosCita = null;
+
     public static JSONObject extraerDatosCita() {
         JSONObject js = null;
         try {
@@ -59,10 +59,10 @@ public class TratamientoDatos {
         return js;
     }
 
-    public static  Cita llenarCita(JSONObject citas) {
-        
+    public static Cita llenarCita(JSONObject citas) {
+        Cita datosCita = new Cita();
         try {
-            datosCita = new Cita();
+
             Date fecha = new SimpleDateFormat("yyyy-mm-dd").parse(citas.getString("fecha"));
             datosCita.setId(citas.getInt("id"));
             datosCita.setPaciente(citas.getString("paciente"));
@@ -72,12 +72,12 @@ public class TratamientoDatos {
             datosCita.setTipo_consulta(citas.getString("tipo_consulta"));
             datosCita.setObservaciones(citas.getString("observaciones"));
             datosCita.setFecha(fecha);
-            
+
             return datosCita;
         } catch (ParseException ex) {
             Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return datosCita;
     }
-    
+
 }
