@@ -6,6 +6,7 @@
 package com.masterclinic.MODELO;
 
 import java.util.Date;
+import java.util.UUID;
 import org.json.JSONObject;
 
 /**
@@ -13,6 +14,7 @@ import org.json.JSONObject;
  * @author Gott Jagger
  */
 public class Cita {
+    private UUID uuid;
     private int id;
     private String medico;
     private String paciente;
@@ -26,7 +28,8 @@ public class Cita {
     public Cita() {
     }
 
-    public Cita(int id, String medico, String paciente, Date fecha, String empresa, String tipo_consulta, String entidad, String observaciones) {
+    public Cita(UUID uuid, int id, String medico, String paciente, Date fecha, String empresa, String tipo_consulta, String entidad, String observaciones) {
+        this.uuid = uuid;
         this.id = id;
         this.medico = medico;
         this.paciente = paciente;
@@ -34,9 +37,17 @@ public class Cita {
         this.empresa = empresa;
         this.tipo_consulta = tipo_consulta;
         this.entidad = entidad;
-        this.observaciones = observaciones;
+        this.observaciones = observaciones;  
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+ 
     
     
     public int getId() {

@@ -32,7 +32,7 @@ public class GeneradorPDF {
 
     public  void crearPDF(Cita datos, OutputStream ruta) {
         try {
-
+            
             Document documento = new Document();
             PdfWriter writer = PdfWriter.getInstance(documento, ruta);
             documento.open();
