@@ -14,6 +14,7 @@ import org.json.JSONObject;
  * @author Gott Jagger
  */
 public class Cita {
+
     private UUID uuid;
     private int id;
     private String medico;
@@ -23,12 +24,12 @@ public class Cita {
     private String tipo_consulta;
     private String entidad;
     private String observaciones;
-    
+    private String telefono;
 
     public Cita() {
     }
 
-    public Cita(UUID uuid, int id, String medico, String paciente, Date fecha, String empresa, String tipo_consulta, String entidad, String observaciones) {
+    public Cita(UUID uuid, int id, String medico, String paciente, Date fecha, String empresa, String tipo_consulta, String entidad, String observaciones, String telefono) {
         this.uuid = uuid;
         this.id = id;
         this.medico = medico;
@@ -37,7 +38,8 @@ public class Cita {
         this.empresa = empresa;
         this.tipo_consulta = tipo_consulta;
         this.entidad = entidad;
-        this.observaciones = observaciones;  
+        this.observaciones = observaciones;
+        this.telefono = telefono;
     }
 
     public UUID getUuid() {
@@ -47,9 +49,7 @@ public class Cita {
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
- 
-    
-    
+
     public int getId() {
         return id;
     }
@@ -113,5 +113,16 @@ public class Cita {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
     
+    
+
+   
 }

@@ -18,6 +18,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.masterclinic.MODELO.Cita;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,8 +32,8 @@ public class TratamientoDatos {
 
     Cita datosCita = null;
 
-    public static JSONObject extraerDatosCita() {
-        JSONObject js = null;
+    public static JSONArray extraerDatosCita() {
+        JSONArray JsonAr = null;
         try {
 
             URLConnection connection = new URL("https://my.api.mockaroo.com/cita.json?key=dfef97c0").openConnection();
@@ -38,10 +41,13 @@ public class TratamientoDatos {
 
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-                String line = in.readLine();
-                js = new JSONObject(line);
-
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                }
                 in.close();
+                JsonAr = new JSONArray(sb.toString());
 
             } catch (IOException ex) {
 
@@ -49,29 +55,38 @@ public class TratamientoDatos {
             }
 
         } catch (MalformedURLException ex) {
-
             Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
 
         }
 
-        return js;
+        return JsonAr;
     }
 
-    public static Cita llenarCita(JSONObject citas) {
-        Cita datosCita = new Cita();
+    public static ArrayList<Cita> llenarCita(JSONArray citas) {
+        ArrayList<Cita> datosCita = new ArrayList();
+
         try {
 
-            Date fecha = new SimpleDateFormat("yyyy-mm-dd").parse(citas.getString("fecha"));
-            datosCita.setId(citas.getInt("id"));
-            datosCita.setPaciente(citas.getString("paciente"));
-            datosCita.setMedico(citas.getString("medico"));
-            datosCita.setEmpresa(citas.getString("empresa"));
-            datosCita.setEntidad(citas.getString("entidad"));
-            datosCita.setTipo_consulta(citas.getString("tipo_consulta"));
-            datosCita.setObservaciones(citas.getString("observaciones"));
-            datosCita.setFecha(fecha);
+            for (int i = 0; i < citas.length(); i++) {
+                Cita datosPaciente = new Cita();
+                Date fecha = new SimpleDateFormat("yyyy-mm-dd").parse(citas.getJSONObject(i).getString("fecha"));
+
+                datosPaciente.setUuid(UUID.fromString(citas.getJSONObject(i).getString("uuid")));
+                datosPaciente.setId(citas.getJSONObject(i).getInt("id"));
+                datosPaciente.setPaciente(citas.getJSONObject(i).getString("paciente"));
+                datosPaciente.setMedico(citas.getJSONObject(i).getString("medico"));
+                datosPaciente.setEmpresa(citas.getJSONObject(i).getString("empresa"));
+                datosPaciente.setEntidad(citas.getJSONObject(i).getString("entidad"));
+                datosPaciente.setTipo_consulta(citas.getJSONObject(i).getString("tipo_consulta"));
+                datosPaciente.setObservaciones(citas.getJSONObject(i).getString("observaciones"));
+                datosPaciente.setTelefono(citas.getJSONObject(i).getString("telefono"));
+                datosPaciente.setFecha(fecha);
+
+                datosCita.add(datosPaciente);
+
+            }
 
             return datosCita;
         } catch (ParseException ex) {
@@ -80,4 +95,17 @@ public class TratamientoDatos {
         return datosCita;
     }
 
+    public static void main(String[] args) {
+        ArrayList<Cita> lista = llenarCita(extraerDatosCita());
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println(lista.get(i).getUuid());
+        }
+
+//        Iterator<Cita> it = lista.iterator();
+//        while(it.hasNext()){
+//            Cita iterador = it.next();
+//            
+//            System.out.println(iterador.getPaciente());
+//        }
+    }
 }

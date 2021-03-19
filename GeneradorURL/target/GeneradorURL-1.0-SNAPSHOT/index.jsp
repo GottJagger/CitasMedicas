@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="refresh" content="0;http://localhost:8080/GenratorURL/ServletGenerarPDF?id=1">
+        
         <title>testing jsp</title>
     </head>
     <body>
