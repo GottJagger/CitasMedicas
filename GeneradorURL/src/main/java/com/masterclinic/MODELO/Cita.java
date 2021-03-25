@@ -7,7 +7,7 @@ package com.masterclinic.MODELO;
 
 import java.util.Date;
 import java.util.UUID;
-import org.json.JSONObject;
+
 
 /**
  *
@@ -29,7 +29,7 @@ public class Cita {
     public Cita() {
     }
 
-    public Cita(UUID uuid, int id, String medico, String paciente, Date fecha, String empresa, String tipo_consulta, String entidad, String observaciones, String telefono) {
+    public Cita(UUID uuid, int id, String medico, String paciente, Date fecha, String empresa, String tipo_consulta, String entidad, String observaciones, String telefono,String email) {
         this.uuid = uuid;
         this.id = id;
         this.medico = medico;

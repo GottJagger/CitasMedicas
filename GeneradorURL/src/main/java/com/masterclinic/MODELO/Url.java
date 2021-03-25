@@ -5,20 +5,22 @@
  */
 package com.masterclinic.MODELO;
 
+import java.util.UUID;
+
 /**
  *
  * @author Gott Jagger
  */
 public class Url {
     private String url;
-    private int id;
+    private UUID uuid;
 
     public Url() {
     }
 
-    public Url(String url, int id) {
+    public Url(String url, UUID id) {
         this.url = url;
-        this.id = id;
+        this.uuid = id;
     }
 
     public String getUrl() {
@@ -29,12 +31,12 @@ public class Url {
         this.url = url;
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID id) {
+        this.uuid = id;
     }
     
     
