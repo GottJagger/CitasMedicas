@@ -18,9 +18,9 @@ public class Url {
     public Url() {
     }
 
-    public Url(String url, UUID id) {
+    public Url(String url, UUID uuid) {
         this.url = url;
-        this.uuid = id;
+        this.uuid = uuid;
     }
 
     public String getUrl() {
@@ -31,13 +31,14 @@ public class Url {
         this.url = url;
     }
 
-    public UUID getId() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setId(UUID id) {
-        this.uuid = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
-    
+
+   
     
 }

@@ -31,19 +31,21 @@ import org.json.JSONObject;
  */
 public class GestionAcortadorURL {
 
-    private static ArrayList<Url> ExtraerURL(ArrayList<Cita> listaCitas) {
+    public static ArrayList<Url> ExtraerURL(ArrayList<Cita> listaCitas) {
 
         ArrayList<Url> listaUrl = new ArrayList<>();
         for (int i = 0; i < listaCitas.size(); i++) {
             Url url = new Url();
-            url.setId(listaCitas.get(i).getUuid());
-            url.setUrl("http://127.0.0.1/citas/consultar?uuid=" + String.valueOf(listaCitas.get(i).getUuid()));
+            
+            url.setUuid(listaCitas.get(i).getUuid());
+            url.setUrl("http://127.0.0.1/CodeIgniter/index.php/Citas/consultar?uuid=" + String.valueOf(listaCitas.get(i).getUuid()));
+            
             listaUrl.add(url);
         }
         return listaUrl;
     }
 
-    private static ArrayList<Url> AcortarURL(ArrayList<Url> listaURL) {
+    public static ArrayList<Url> AcortarURL(ArrayList<Url> listaURL) {
         ArrayList<Url> listaUrlAcortada = new ArrayList<>();
 
         for (int i = 0; i < listaURL.size(); i++) {
@@ -74,6 +76,7 @@ public class GestionAcortadorURL {
                 
 
                 UrlAcortada.setUrl(jsonHijo.getString("shortLink"));
+                UrlAcortada.setUuid(listaURL.get(i).getUuid());
                 listaUrlAcortada.add(UrlAcortada);
 
             } catch (MalformedURLException ex) {
@@ -87,7 +90,7 @@ public class GestionAcortadorURL {
     }
 
     public static void main(String[] args) {
-        TratamientoDatos datos = new TratamientoDatos();
+        ObtencionDatos datos = new ObtencionDatos();
         ArrayList<Cita> datosCita = datos.llenarCita(datos.extraerDatosCita());
         ArrayList<Url> lista= AcortarURL(ExtraerURL(datosCita));
         

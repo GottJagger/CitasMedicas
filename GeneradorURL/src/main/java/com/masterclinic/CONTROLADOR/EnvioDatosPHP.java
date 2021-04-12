@@ -7,21 +7,20 @@ package com.masterclinic.CONTROLADOR;
 
 import com.masterclinic.MODELO.Cita;
 import com.masterclinic.MODELO.Url;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -50,54 +49,53 @@ public class EnvioDatosPHP {
 
         JSONArray jsonCitas = new JSONArray();
 
-        try {
-
-            URL url = new URL("http://localhost:3000/controlador/APIcita.php");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            con.setDoOutput(true);
-
-            for (int i = 0; i < ListaCitas.size(); i++) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("uuid", ListaCitas.get(i).getUuid());
-                jsonObject.put("id", ListaCitas.get(i).getId());
-                jsonObject.put("paciente", ListaCitas.get(i).getPaciente());
-                jsonObject.put("medico", ListaCitas.get(i).getMedico());
-                jsonObject.put("empresa", ListaCitas.get(i).getEmpresa());
-                jsonObject.put("entidad", ListaCitas.get(i).getEntidad());
-                jsonObject.put("tipo_consulta", ListaCitas.get(i).getTipo_consulta());
-                jsonObject.put("observaciones", ListaCitas.get(i).getObservaciones());
-                jsonObject.put("fecha", ListaCitas.get(i).getFecha());
-                for (int j = 0; j < UrlAcortadas.size(); j++) {
-                    if (ListaCitas.get(i).getUuid().equals(UrlAcortadas.get(j).getId())) {
-                        jsonObject.put("url_Arcortada", UrlAcortadas.get(j).getUrl());
-                    }
+//        try {
+        for (int i = 0; i < ListaCitas.size(); i++) {
+            String UrlParametros = "uuid=" + ListaCitas.get(i).getUuid() + "&"
+                    + "id=" + ListaCitas.get(i).getId() + "&" + "paciente="
+                    + ListaCitas.get(i).getPaciente() + "&" + "medico="
+                    + ListaCitas.get(i).getMedico() + "&" + "empresa="
+                    + ListaCitas.get(i).getEmpresa() + "&" + "entidad="
+                    + ListaCitas.get(i).getEntidad() + "&" + "tipo_consulta="
+                    + ListaCitas.get(i).getTipo_consulta() + "&" + "observaciones="
+                    + ListaCitas.get(i).getObservaciones() + "&" + "fecha="
+                    + ListaCitas.get(i).getFecha();
+            for (int j = 0; j < UrlAcortadas.size(); j++) {
+                if (ListaCitas.get(i).getUuid().equals(UrlAcortadas.get(j).getUuid())) {
+                   UrlParametros= UrlParametros+"&url_Arcortada=" + UrlAcortadas.get(j).getUrl();
+                    System.out.println(UrlParametros+"\n\n\n");
                 }
-                jsonCitas.put(i, jsonObject);
-
             }
             
-            try ( OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonCitas.toString().getBytes("utf-8");
-                os.write(input, 0, input.length);
+            try {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                MediaType mediaType = MediaType.parse("text/plain");
+                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                RequestBody body = RequestBody.create("{}", JSON);
+                Request request = new Request.Builder()
+                        .url("http://127.0.0.1/CodeIgniter/index.php/Citas/Guardar?"+UrlParametros)
+                        .method("POST", body)
+                        .build();
+                Response response = client.newCall(request).execute();
+                System.out.println(response);
+
+            } catch (IOException ex) {
+                Logger.getLogger(EnvioDatosPHP.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            try ( BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-                System.out.println(response.toString());
-            }
-
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(EnvioDatosPHP.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(EnvioDatosPHP.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
+    public static void main(String[] args) {
+        ObtencionDatos datos = new ObtencionDatos();
+        ArrayList<Cita> datosCita = datos.llenarCita(datos.extraerDatosCita());
+
+        GestionAcortadorURL url = new GestionAcortadorURL();
+        ArrayList<Url> urlAcortada = url.AcortarURL(url.ExtraerURL(datosCita));
+
+        RequestPHP(datosCita, urlAcortada);
+
+    }
 }

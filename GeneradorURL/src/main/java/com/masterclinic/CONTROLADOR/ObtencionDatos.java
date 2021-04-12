@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author Gott Jagger
  */
-public class TratamientoDatos {
+public class ObtencionDatos {
 
     Cita datosCita = null;
 
@@ -51,13 +51,13 @@ public class TratamientoDatos {
 
             } catch (IOException ex) {
 
-                Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ObtencionDatos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } catch (MalformedURLException ex) {
-            Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ObtencionDatos.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ObtencionDatos.class.getName()).log(Level.SEVERE, null, ex);
 
         }
 
@@ -73,7 +73,7 @@ public class TratamientoDatos {
                 Cita datosPaciente = new Cita();
                 Date fecha = new SimpleDateFormat("yyyy-mm-dd").parse(citas.getJSONObject(i).getString("fecha"));
 
-                datosPaciente.setUuid(UUID.fromString(citas.getJSONObject(i).getString("uuid")));
+                datosPaciente.setUuid(generarUUID());
                 datosPaciente.setId(citas.getJSONObject(i).getInt("id"));
                 datosPaciente.setPaciente(citas.getJSONObject(i).getString("paciente"));
                 datosPaciente.setMedico(citas.getJSONObject(i).getString("medico"));
@@ -81,7 +81,8 @@ public class TratamientoDatos {
                 datosPaciente.setEntidad(citas.getJSONObject(i).getString("entidad"));
                 datosPaciente.setTipo_consulta(citas.getJSONObject(i).getString("tipo_consulta"));
                 datosPaciente.setObservaciones(citas.getJSONObject(i).getString("observaciones"));
-                datosPaciente.setTelefono(citas.getJSONObject(i).getString("telefono"));
+//                datosPaciente.setTelefono(citas.getJSONObject(i).getString("telefono"));
+                datosPaciente.setTelefono("3218480935");
                 datosPaciente.setFecha(fecha);
 
                 datosCita.add(datosPaciente);
@@ -90,22 +91,17 @@ public class TratamientoDatos {
 
             return datosCita;
         } catch (ParseException ex) {
-            Logger.getLogger(TratamientoDatos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ObtencionDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return datosCita;
     }
 
-    public static void main(String[] args) {
-        ArrayList<Cita> lista = llenarCita(extraerDatosCita());
-        for (int i = 0; i < lista.size(); i++) {
-            System.out.println(lista.get(i).getUuid());
-        }
+    private static UUID generarUUID() {
+        UUID uuid = java.util.UUID.randomUUID();
+        return uuid;
+    }
 
-//        Iterator<Cita> it = lista.iterator();
-//        while(it.hasNext()){
-//            Cita iterador = it.next();
-//            
-//            System.out.println(iterador.getPaciente());
-//        }
+    public static void main(String[] args) {
+        
     }
 }
