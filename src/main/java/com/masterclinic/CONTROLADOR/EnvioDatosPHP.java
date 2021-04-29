@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class EnvioDatosPHP {
 
  
 
-    public static void RequestPHP(ArrayList<Cita> ListaCitas, ArrayList<Url> UrlAcortadas) {
+    public static void RequestPHP(ArrayList<Cita> ListaCitas, ArrayList<Url> UrlAcortadas,Vector<String> estadoPHP) {
 
         JSONArray jsonCitas = new JSONArray();
 
@@ -63,8 +64,8 @@ public class EnvioDatosPHP {
                         .method("POST", body)
                         .build();
                 Response response = client.newCall(request).execute();
-                System.out.println(response);
-
+                
+                estadoPHP.add(""+response.code());
             } catch (IOException ex) {
                 Logger.getLogger(EnvioDatosPHP.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -73,14 +74,4 @@ public class EnvioDatosPHP {
 
     }
 
-    public static void main(String[] args) {
-        ObtencionDatos datos = new ObtencionDatos();
-        ArrayList<Cita> datosCita = datos.llenarCita(datos.extraerDatosCita());
-
-        GestionAcortadorURL url = new GestionAcortadorURL();
-        ArrayList<Url> urlAcortada = url.AcortarURL(url.ExtraerURL(datosCita));
-
-        RequestPHP(datosCita, urlAcortada);
-
-    }
 }

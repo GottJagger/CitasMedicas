@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.html.HTMLEditorKit;
@@ -45,9 +46,9 @@ public class GestionAcortadorURL {
         return listaUrl;
     }
 
-    public static ArrayList<Url> AcortarURL(ArrayList<Url> listaURL) {
+    public static ArrayList<Url> AcortarURL(ArrayList<Url> listaURL, Vector<String> estadoAcURL) {
         ArrayList<Url> listaUrlAcortada = new ArrayList<>();
-
+        String code;
         for (int i = 0; i < listaURL.size(); i++) {
             try {
                 Url UrlAcortada = new Url();
@@ -56,7 +57,8 @@ public class GestionAcortadorURL {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Accept", "application/json");
-
+                
+                estadoAcURL.add(""+conn.getResponseCode());
                 if (conn.getResponseCode() != 200) {
                     throw new RuntimeException("Failed : HTTP error code : "
                             + conn.getResponseCode());
@@ -89,18 +91,4 @@ public class GestionAcortadorURL {
         return listaUrlAcortada;
     }
 
-    public static void main(String[] args) {
-        ObtencionDatos datos = new ObtencionDatos();
-        ArrayList<Cita> datosCita = datos.llenarCita(datos.extraerDatosCita());
-        ArrayList<Url> lista= AcortarURL(ExtraerURL(datosCita));
-        
-        //TODO
-        
-        //COMPONER FORMULARIO PARA EL PHP
-        
-        //GUARDAR INFO EN PHP
-        
- 
-        
-    }
 }
