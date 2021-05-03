@@ -5,10 +5,15 @@
  */
 package com.masterclinic.MAIN;
 
+
+
 /**
  *
  * @author Gott Jagger
  */
 public class Main {
-    
+
+    public static void main(String[] args) {
+
+    }
 }

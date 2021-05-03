@@ -10,6 +10,7 @@ import com.masterclinic.CONTROLADOR.GestionAcortadorURL;
 import com.masterclinic.CONTROLADOR.GestionSMS;
 import com.masterclinic.CONTROLADOR.ObtencionDatos;
 import com.masterclinic.MODELO.Cita;
+import com.masterclinic.MODELO.DatosGlobales;
 import com.masterclinic.MODELO.Url;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +55,7 @@ public class CitaMedicaGUI extends javax.swing.JFrame {
                     minuto = calendario.get(Calendar.MINUTE);
                     segundos = calendario.get(Calendar.SECOND);
 
-                    if (hora == 17 && minuto == 17 && segundos == 0) {
+                    if (hora == 9 && minuto == 49 && segundos == 0) {
                         estadoAcURL.clear();
                         estadoPHP.clear();
                         estadoSMS.clear();
@@ -65,10 +66,9 @@ public class CitaMedicaGUI extends javax.swing.JFrame {
 
                         datosAcURL = acortardorUrl.AcortarURL(acortardorUrl.ExtraerURL(datosCitas),
                                 estadoAcURL);
-
                         expedidorDatosCitas.RequestPHP(datosCitas, datosAcURL, estadoPHP);
-
                         gestorSMS.CrearSMS(datosCitas, datosAcURL, estadoSMS);
+
                         Thread.sleep(3000);
                     }
                 } catch (InterruptedException ex) {
@@ -160,6 +160,7 @@ public class CitaMedicaGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+       
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -186,7 +187,6 @@ public class CitaMedicaGUI extends javax.swing.JFrame {
                 datosCitas.get(i).getMedico(), datosCitas.get(i).getTipo_consulta(),
                 datosCitas.get(i).getObservaciones(), datosCitas.get(i).getFecha(),
                 estadoAcURL.elementAt(i), estadoSMS.elementAt(i), estadoPHP.elementAt(i)};
-
             modelo.addRow(data);
 
         }
