@@ -6,6 +6,7 @@
 package com.masterclinic.CONTROLADOR;
 
 import com.masterclinic.MODELO.Cita;
+import com.masterclinic.MODELO.DatosGlobales;
 import com.masterclinic.MODELO.Url;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -19,18 +20,17 @@ import java.util.Vector;
  */
 public class GestionSMS {
 
-    public static final String ACCOUNT_SID = "ACf3ee91d324ac6d98ab206031cebb8240";
-    public static final String AUTH_TOKEN = "0193f72ee12a5891cdf8a88a1c6053e4";
+    DatosGlobales data = new DatosGlobales();
 
-    public static void CrearSMS(ArrayList<Cita> listaCitas, ArrayList<Url> listaUrlAc, Vector<String> estadoSMS) {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        
+    public void CrearSMS(ArrayList<Cita> listaCitas, ArrayList<Url> listaUrlAc, Vector<String> estadoSMS) {
+        Twilio.init(data.getACCOUNT_SID(), data.getAUTH_TOKEN());
+
         for (int i = 0; i < listaCitas.size(); i++) {
             for (int j = 0; j < listaUrlAc.size(); j++) {
                 if (listaCitas.get(i).getUuid().equals(listaUrlAc.get(j).getUuid())) {
                     PhoneNumber para = new PhoneNumber("+57" + listaCitas.get(i).getTelefono());
                     System.out.println(listaCitas.get(i).getTelefono());
-                    PhoneNumber de = new PhoneNumber("+18587710364");
+                    PhoneNumber de = new PhoneNumber(data.getTelefonoTiwilio());
                     String mensaje = "Estimado " + listaCitas.get(i).getPaciente() + " usted tiene"
                             + "una cita la fecha: " + listaCitas.get(i).getFecha() + " con el medico "
                             + listaCitas.get(i).getMedico() + " para mayor detalle click enlace: \n" + listaUrlAc.get(j).getUrl();
@@ -38,12 +38,17 @@ public class GestionSMS {
                             para,
                             de,
                             mensaje).create();
-                    estadoSMS.add(""+mensaje1.getStatus());
+                    estadoSMS.add("" + mensaje1.getStatus());
                     break;
                 }
             }
         }
-        
+
+    }
+
+    public static void main(String[] args) {
+        DatosGlobales dataTest = new DatosGlobales();
+        System.out.println("datos SID:" + dataTest.getACCOUNT_SID() + "\ndatos Token:" + dataTest.getAUTH_TOKEN()+"\ndatos Telefono:"+dataTest.getTelefonoTiwilio());        
     }
 
 }

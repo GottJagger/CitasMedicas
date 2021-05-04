@@ -8,14 +8,10 @@ package com.masterclinic.CONTROLADOR;
 import com.masterclinic.MODELO.Cita;
 import com.masterclinic.MODELO.Url;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

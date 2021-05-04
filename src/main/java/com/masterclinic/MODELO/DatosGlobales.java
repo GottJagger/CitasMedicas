@@ -29,7 +29,7 @@ public class DatosGlobales {
     int segundo;
 
     protected Connection conectar = null;
-    private final String url = "jdbc:mysql://localhost:3306/cita";
+    private final String urlDatosGlobales = "jdbc:mysql://localhost:3306/cita";
     private final String usuario = "root";
     private final String password = "";
 
@@ -91,9 +91,56 @@ public class DatosGlobales {
 
     public DatosGlobales() {
 
-    }
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conectar = DriverManager.getConnection(urlDatosGlobales, usuario, password);
+            System.out.println("Conexión Exitosa");
 
-    public DatosGlobales(String ACCOUNT_SID, String AUTH_TOKEN, String telefonoTiwilio, String keyAcortadorURL, int Hora, int minuto, int segundo) {
+            PreparedStatement stmt = conectar.prepareStatement("SELECT * FROM datos_globales_sistema_java");
+            ResultSet res = stmt.executeQuery();
+
+            while (res.next()) {
+
+                //Datos de Tiwilio.
+                if (res.getString("nombre").equalsIgnoreCase("ACCOUNT SID")) {
+
+                    this.ACCOUNT_SID = res.getString("valor");
+
+                }
+                if (res.getString("nombre").equalsIgnoreCase("AUTH TOKEN")) {
+
+                    this.AUTH_TOKEN = res.getString("valor");
+                }
+                if (res.getString("nombre").equalsIgnoreCase("Telefono")) {
+                    this.telefonoTiwilio = res.getString("valor");
+                }
+
+                //la llave de la api acortador.
+                if (res.getString("nombre").equalsIgnoreCase("Key AcortadorURL")) {
+
+                    this.keyAcortadorURL = res.getString("valor");
+                }
+                //tiempo en que el programa hara el envio y el guardado.
+                if (res.getString("nombre").equalsIgnoreCase("Hora")) {
+
+                    this.Hora = Integer.parseInt(res.getString("valor"));
+                }
+                if (res.getString("nombre").equalsIgnoreCase("minuto")) {
+
+                    this.minuto = Integer.parseInt(res.getString("valor"));
+                }
+                if (res.getString("nombre").equalsIgnoreCase("segundo")) {
+
+                    this.segundo = Integer.parseInt(res.getString("valor"));
+                }
+            }
+            conectar.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al abrir Conexión: " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DatosGlobales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.ACCOUNT_SID = ACCOUNT_SID;
         this.AUTH_TOKEN = AUTH_TOKEN;
         this.telefonoTiwilio = telefonoTiwilio;
@@ -101,35 +148,6 @@ public class DatosGlobales {
         this.Hora = Hora;
         this.minuto = minuto;
         this.segundo = segundo;
-    }
-
-    public void abrirConexion() {
-        try {
-
-            Class.forName("com.mysql.jdbc.Driver");
-            conectar = DriverManager.getConnection(url, usuario, password);
-            System.out.println("Conexión Exitosa");
-
-        } catch (SQLException ex) {
-            System.out.println("Error al abrir Conexión: " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DatosGlobales.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void setDatos() {
-
-        try {
-
-            PreparedStatement stmt = conectar.prepareStatement("SELECT * FROM datos_globales_sistema_java");
-            ResultSet res = stmt.executeQuery();
-            while (res.next()) {
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DatosGlobales.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
 }

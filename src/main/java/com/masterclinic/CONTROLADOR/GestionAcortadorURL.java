@@ -6,6 +6,7 @@
 package com.masterclinic.CONTROLADOR;
 
 import com.masterclinic.MODELO.Cita;
+import com.masterclinic.MODELO.DatosGlobales;
 import com.masterclinic.MODELO.Url;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,9 +18,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.html.HTMLEditorKit;
-import netscape.javascript.JSObject;
-import org.json.JSONArray;
+
 import org.json.JSONObject;
 
 /**
@@ -47,12 +46,13 @@ public class GestionAcortadorURL {
     }
 
     public static ArrayList<Url> AcortarURL(ArrayList<Url> listaURL, Vector<String> estadoAcURL) {
+        DatosGlobales data = new DatosGlobales();
         ArrayList<Url> listaUrlAcortada = new ArrayList<>();
         String code;
         for (int i = 0; i < listaURL.size(); i++) {
             try {
                 Url UrlAcortada = new Url();
-                URL url = new URL("https://cutt.ly/api/api.php?key=d20dd473ff9f3c2ac18e39ee48dd4508bd119&short=" + listaURL.get(i).getUrl());
+                URL url = new URL("https://cutt.ly/api/api.php?key="+data.getKeyAcortadorURL()+"&short=" + listaURL.get(i).getUrl());
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");

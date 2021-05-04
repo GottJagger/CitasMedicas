@@ -17,8 +17,6 @@ import java.util.Calendar;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -48,14 +46,19 @@ public class CitaMedicaGUI extends javax.swing.JFrame {
         public void run() {
 
             while (true) {
+
                 try {
+                    DatosGlobales data = new DatosGlobales();
+                    Thread.sleep(50);
                     Calendar calendario = Calendar.getInstance();
                     int hora, minuto, segundos;
                     hora = calendario.get(Calendar.HOUR_OF_DAY);
                     minuto = calendario.get(Calendar.MINUTE);
                     segundos = calendario.get(Calendar.SECOND);
-
-                    if (hora == 9 && minuto == 49 && segundos == 0) {
+                    System.out.println(data.getHora()+" : "+data.getMinuto());
+                    System.out.println(hora+":"+minuto);
+                    if (hora == data.getHora() && minuto == data.getMinuto() && segundos == data.getSegundo()) {
+                        System.out.println("Entro al proceso de los datos.....");
                         estadoAcURL.clear();
                         estadoPHP.clear();
                         estadoSMS.clear();
@@ -160,7 +163,6 @@ public class CitaMedicaGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-       
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{

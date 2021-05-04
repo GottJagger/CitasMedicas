@@ -19,11 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.masterclinic.MODELO.Cita;
 import java.net.HttpURLConnection;
+import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.UUID;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -32,6 +31,10 @@ import org.json.JSONObject;
 public class ObtencionDatos {
 
     Cita datosCita = null;
+    protected Connection conectar = null;
+    private final String urlDatosGlobales = "jdbc:mysql://localhost:3306/cita";
+    private final String usuario = "root";
+    private final String password = "";
 
     public static JSONArray extraerDatosCita() {
         JSONArray JsonAr = null;
@@ -103,7 +106,4 @@ public class ObtencionDatos {
         return uuid;
     }
 
-    public static void main(String[] args) {
-        System.out.println(llenarCita(extraerDatosCita()));
-    }
 }
